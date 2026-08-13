@@ -8,6 +8,11 @@ import {
   UserRound, UsersRound, X
 } from 'lucide-vue-next'
 import { careerProfiles, credentials, faqs, routeMeta, students } from './courseData.js'
+import RouteBInfographic from './components/RouteBInfographic.vue'
+import RouteAInfographic from './components/RouteAInfographic.vue'
+import RouteCInfographic from './components/RouteCInfographic.vue'
+import RouteDInfographic from './components/RouteDInfographic.vue'
+import RouteEInfographic from './components/RouteEInfographic.vue'
 import logoUrl from '../new/100ask-logo.jpg'
 
 const consultationUrl = 'https://work.weixin.qq.com/kfid/kfc748c344b6e400d60'
@@ -32,8 +37,8 @@ const benefits = [
 ]
 const activeSection = ref('course')
 const menuOpen = ref(false)
-const selectedProfileId = ref('engineer')
-const selectedRouteId = ref('C')
+const selectedProfileId = ref('career')
+const selectedRouteId = ref('B')
 const caseFilter = ref('all')
 const faqCategory = ref('课程方式')
 const faqQuery = ref('')
@@ -44,6 +49,7 @@ const bookingTime = ref('')
 
 const selectedProfile = computed(() => careerProfiles.find(item => item.id === selectedProfileId.value))
 const selectedRoute = computed(() => students.find(item => item.id === selectedRouteId.value))
+const routeInfographics = { A: RouteAInfographic, B: RouteBInfographic, C: RouteCInfographic, D: RouteDInfographic, E: RouteEInfographic }
 const routeFilters = computed(() => [{ id: 'all', label: '全部' }, ...students.map(item => ({ id: item.id, label: routeMeta[item.id].short }))])
 const visibleCases = computed(() => caseFilter.value === 'all' ? students.slice(0, 3) : students.filter(item => item.id === caseFilter.value))
 const moreCases = computed(() => students.filter(item => !visibleCases.value.some(active => active.id === item.id)).slice(0, 3))
@@ -247,7 +253,8 @@ onBeforeUnmount(() => observer?.disconnect())
               <span>{{ student.id }}</span>{{ routeMeta[student.id].short }}
             </button>
           </div>
-          <div class="route-layout">
+          <component :is="routeInfographics[selectedRouteId]" />
+          <div v-if="false" class="route-layout">
             <div class="route-main">
               <h3>{{ selectedRoute.label }} 岗位路线</h3>
               <div class="route-meta">
