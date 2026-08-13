@@ -10,12 +10,26 @@ import {
 import { careerProfiles, credentials, faqs, routeMeta, students } from './courseData.js'
 import logoUrl from '../new/100ask-logo.jpg'
 
-const productUrl = 'https://item.taobao.com/item.htm?id=1013725209261'
+const consultationUrl = 'https://work.weixin.qq.com/kfid/kfc748c344b6e400d60'
 const navItems = [
   ['course', '课程介绍'], ['audience', '适合人群'], ['routes', '培养路线'],
   ['mentors', '导师团队'], ['cases', '学员案例'], ['faq', '常见问题']
 ]
 const iconMap = { Cpu, BriefcaseBusiness, Compass, TerminalSquare, ChartNoAxesCombined }
+const planSteps = [
+  { icon: BarChart3, title: '能力评估', text: '评估现状与目标差距' },
+  { icon: Compass, title: '路线定制', text: '量身定制学习计划' },
+  { icon: Code2, title: '项目实战', text: '真实项目驱动成长' },
+  { icon: Flag, title: '阶段验收', text: '冲刺目标岗位' }
+]
+const benefits = [
+  { icon: Compass, label: '专属学习路线' },
+  { icon: ClipboardCheck, label: '项目任务清单' },
+  { icon: ShieldCheck, label: '阶段验收标准' },
+  { icon: Code2, label: '代码与方案评审' },
+  { icon: MessageCircleQuestion, label: '1对1技术答疑' },
+  { icon: BriefcaseBusiness, label: '求职方向建议' }
+]
 const activeSection = ref('course')
 const menuOpen = ref(false)
 const selectedProfileId = ref('engineer')
@@ -86,7 +100,7 @@ onBeforeUnmount(() => observer?.disconnect())
           </button>
         </nav>
 
-        <a class="btn btn-primary nav-cta" :href="productUrl" target="_blank" rel="noopener noreferrer">预约1对1评估</a>
+        <a class="btn btn-primary nav-cta" :href="consultationUrl" target="_blank" rel="noopener noreferrer">预约1对1评估</a>
         <button class="menu-button" type="button" :aria-expanded="menuOpen" aria-label="打开导航" @click="menuOpen = !menuOpen">
           <X v-if="menuOpen" :size="22" />
           <Menu v-else :size="22" />
@@ -94,21 +108,36 @@ onBeforeUnmount(() => observer?.disconnect())
       </div>
       <nav v-if="menuOpen" class="mobile-nav" aria-label="移动端导航">
         <button v-for="item in navItems" :key="item[0]" @click="goTo(item[0])">{{ item[1] }}</button>
-        <a :href="productUrl" target="_blank" rel="noopener noreferrer">预约1对1评估 <ArrowRight :size="16" /></a>
+        <a :href="consultationUrl" target="_blank" rel="noopener noreferrer">预约1对1评估 <ArrowRight :size="16" /></a>
       </nav>
     </header>
 
     <main>
+      <aside class="enrollment-banner" aria-label="1对1培养计划招生通知">
+        <div class="container enrollment-inner">
+          <span class="enrollment-badge"><i></i> 本月限额招募</span>
+          <strong>韦东山 1 对 1 嵌入式工程师培养计划</strong>
+          <span class="enrollment-message">每月仅招 15 人 · 先评估基础，再定制专属路线</span>
+          <a :href="consultationUrl" target="_blank" rel="noopener noreferrer">立即申请评估 <ArrowRight :size="16" /></a>
+        </div>
+      </aside>
+
       <section id="course" class="hero section-anchor">
         <div class="circuit circuit-left"></div>
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">百问科技 · 嵌入式工程师成长计划</p>
-            <h1>不是统一课表，而是<br><em>你的专属培养方案</em></h1>
-            <p class="hero-lead">先评估基础与目标，再用项目拆解能力差距，形成可验收的 6 个月成长路线。</p>
+            <p class="hero-program"><span>1 对 1</span> 韦东山嵌入式工程师培养计划</p>
+            <h1>拒绝盲目刷课，<br><em>为你定制成长路线</em></h1>
+            <p class="hero-lead">先评估你的基础与目标岗位，再用真实项目补齐能力差距。导师 6 个月持续陪跑，每个阶段都有明确任务和结果验收。</p>
             <div class="hero-actions">
-              <a class="btn btn-primary btn-large" :href="productUrl" target="_blank" rel="noopener noreferrer">预约学习评估 <ArrowRight :size="18" /></a>
+              <a class="btn btn-primary btn-large hero-primary" :href="consultationUrl" target="_blank" rel="noopener noreferrer">申请 1 对 1 学习评估 <ArrowRight :size="18" /></a>
               <button class="btn btn-outline btn-large" type="button" @click="goTo('routes')">查看培养路线</button>
+            </div>
+            <div class="hero-quota">
+              <span class="quota-number">15<small>人</small></span>
+              <p><b>每月限额招生</b><small>确保每位学员都能得到充分指导</small></p>
+              <i></i>
+              <p><b>入学先评估</b><small>匹配基础、目标与学习投入</small></p>
             </div>
             <div class="hero-trust">
               <span><CheckCircle2 :size="17" /> 先评估，再学习</span>
@@ -118,14 +147,16 @@ onBeforeUnmount(() => observer?.disconnect())
           </div>
 
           <div class="plan-board">
-            <div class="board-topline"><span>1对1培养计划</span><span>百问科技</span></div>
+            <span class="board-ribbon">不是录播课 · 是结果导向的陪跑</span>
+            <div class="board-topline">
+              <div><span>1对1培养计划</span><small>韦东山老师全程把控方向</small></div>
+              <div class="board-mentor">
+                <span class="board-mentor-photo"><img src="/assets/teacher-clean.png" alt="韦东山老师"></span>
+                <p><b>韦东山</b><small>主导师</small></p>
+              </div>
+            </div>
             <div class="plan-flow">
-              <div v-for="(step, index) in [
-                { icon: BarChart3, title: '能力评估', text: '评估现状与目标差距' },
-                { icon: Compass, title: '路线定制', text: '量身定制学习计划' },
-                { icon: Code2, title: '项目实战', text: '真实项目驱动成长' },
-                { icon: Flag, title: '阶段验收', text: '冲刺目标岗位' }
-              ]" :key="step.title" class="plan-step">
+              <div v-for="(step, index) in planSteps" :key="step.title" class="plan-step">
                 <div class="flow-icon"><component :is="step.icon" :size="26" /></div>
                 <span v-if="index < 3" class="flow-line"></span>
                 <strong>{{ step.title }}</strong><small>{{ step.text }}</small>
@@ -145,8 +176,8 @@ onBeforeUnmount(() => observer?.disconnect())
         </div>
         <div class="container benefit-strip">
           <b>你将获得</b>
-          <span v-for="(item, index) in ['专属学习路线', '项目任务清单', '阶段验收标准', '代码与方案评审', '1对1技术答疑', '求职方向建议']" :key="item">
-            <component :is="[Compass, ClipboardCheck, ShieldCheck, Code2, MessageCircleQuestion, BriefcaseBusiness][index]" />{{ item }}
+          <span v-for="item in benefits" :key="item.label">
+            <component :is="item.icon" />{{ item.label }}
           </span>
         </div>
       </section>
@@ -188,7 +219,7 @@ onBeforeUnmount(() => observer?.disconnect())
               </div>
               <div class="target-line"><Flag :size="22" /><p><span>预计目标</span><b>{{ selectedProfile.goal }}</b></p></div>
               <div class="recommend-actions">
-                <a class="btn btn-primary" :href="productUrl" target="_blank" rel="noopener noreferrer">获取我的培养建议</a>
+                <a class="btn btn-primary" :href="consultationUrl" target="_blank" rel="noopener noreferrer">获取我的培养建议</a>
                 <button class="text-link" @click="goTo('routes')">查看详细路线 <ArrowRight :size="16" /></button>
               </div>
             </div>
@@ -209,7 +240,7 @@ onBeforeUnmount(() => observer?.disconnect())
             <p class="eyebrow">五条路线 · 一个目标</p>
             <h2>通向不同岗位目标的培养路线</h2>
             <p>路线不是固定课表。评估之后，项目内容与学习节奏会根据你的基础调整。</p>
-            <a class="heading-action" :href="productUrl" target="_blank" rel="noopener noreferrer">先做能力评估</a>
+            <a class="heading-action" :href="consultationUrl" target="_blank" rel="noopener noreferrer">先做能力评估</a>
           </div>
           <div class="route-tabs" role="tablist">
             <button v-for="student in students" :key="student.id" :class="{ active: selectedRouteId === student.id }" role="tab" @click="selectedRouteId = student.id">
@@ -239,7 +270,7 @@ onBeforeUnmount(() => observer?.disconnect())
             <aside class="route-outcome">
               <h3>完成路线后，你将具备</h3>
               <ul><li v-for="item in ['理解完整技术链路', '能够独立拆解任务', '掌握调试定位方法', '完成可展示的综合项目']" :key="item"><CheckCircle2 />{{ item }}</li></ul>
-              <a class="btn btn-primary" :href="productUrl" target="_blank" rel="noopener noreferrer">获取我的定制路线</a>
+              <a class="btn btn-primary" :href="consultationUrl" target="_blank" rel="noopener noreferrer">获取我的定制路线</a>
               <button class="text-link" @click="selectedRouteId = selectedRouteId === 'E' ? 'A' : String.fromCharCode(selectedRouteId.charCodeAt(0) + 1)">查看其他方向 <ArrowRight :size="16" /></button>
             </aside>
           </div>
@@ -256,7 +287,7 @@ onBeforeUnmount(() => observer?.disconnect())
             <div class="mentor-bio">
               <h3>韦东山</h3><p class="mentor-role">嵌入式Linux资深导师 · 百问科技创始人</p>
               <ul><li v-for="item in credentials.slice(0, 4)" :key="item"><CheckCircle2 />{{ item }}</li></ul>
-              <div class="mentor-actions"><a class="btn btn-primary" :href="productUrl" target="_blank" rel="noopener noreferrer">预约导师评估</a><button class="text-link" @click="goTo('faq')">了解课程方式 <ArrowRight :size="16" /></button></div>
+              <div class="mentor-actions"><a class="btn btn-primary" :href="consultationUrl" target="_blank" rel="noopener noreferrer">预约导师评估</a><button class="text-link" @click="goTo('faq')">了解课程方式 <ArrowRight :size="16" /></button></div>
             </div>
             <div class="mentor-numbers"><div><PlaySquare /><p><b>3700<span>节+</span></b><small>原创教程</small></p></div><div><UsersRound /><p><b>300<span>万+</span></b><small>累计学员</small></p></div></div>
           </div>
@@ -283,7 +314,7 @@ onBeforeUnmount(() => observer?.disconnect())
               </div>
               <div class="completed-projects"><b>完成项目</b><span v-for="project in routeMeta[student.id].projects" :key="project"><Check :size="14" />{{ project }}</span></div>
             </div>
-            <aside class="ability-panel"><h4>本案例能力变化</h4><div v-for="(label, index) in abilityLabels" :key="label" class="ability-row" :class="`tone-${index}`"><span class="ability-name"><component :is="[Layers3, Cpu, Target, ClipboardCheck][index]" :size="17" />{{ label }}</span><p><small>学习前 {{ routeMeta[student.id].skills[index] }}%</small><small>学习后 {{ 80 + index * 2 }}%</small></p><div><i :style="{ width: `${routeMeta[student.id].skills[index]}%` }"></i><b :style="{ width: `${80 + index * 2}%` }"></b></div></div><blockquote>用项目把零散知识连成完整系统</blockquote><a class="btn btn-primary" :href="productUrl" target="_blank" rel="noopener noreferrer">获取相似培养路线</a></aside>
+            <aside class="ability-panel"><h4>本案例能力变化</h4><div v-for="(label, index) in abilityLabels" :key="label" class="ability-row" :class="`tone-${index}`"><span class="ability-name"><component :is="[Layers3, Cpu, Target, ClipboardCheck][index]" :size="17" />{{ label }}</span><p><small>学习前 {{ routeMeta[student.id].skills[index] }}%</small><small>学习后 {{ 80 + index * 2 }}%</small></p><div><i :style="{ width: `${routeMeta[student.id].skills[index]}%` }"></i><b :style="{ width: `${80 + index * 2}%` }"></b></div></div><blockquote>用项目把零散知识连成完整系统</blockquote><a class="btn btn-primary" :href="consultationUrl" target="_blank" rel="noopener noreferrer">获取相似培养路线</a></aside>
           </article>
           <div v-if="caseFilter !== 'all'" class="more-case-block">
             <h3>更多学习路径</h3>
@@ -314,13 +345,13 @@ onBeforeUnmount(() => observer?.disconnect())
               <p v-if="!visibleFaqs.length" class="empty-state">没有找到相关问题，请更换关键词或分类。</p>
             </div>
           </div>
-          <aside class="booking-panel"><span class="free-tag">免费 · 约15分钟</span><h3>预约1对1学习评估</h3><p>先聊基础与目标，再判断是否适合，不急着报名。</p><div class="booking-steps"><div><ClipboardCheck /></div><i></i><div><MessageCircleQuestion /></div><i></i><div><BarChart3 /></div><i></i><div><Flag /></div></div><div class="booking-labels"><span>提交需求</span><span>课程沟通</span><span>能力评估</span><span>获得建议</span></div><div class="booking-fields"><label><span>当前基础</span><select v-model="bookingBase"><option value="" disabled>请选择</option><option>C语言基础</option><option>单片机经验</option><option>Linux基础</option></select></label><label><span>目标方向</span><select v-model="bookingTarget"><option value="" disabled>请选择</option><option>嵌入式基础</option><option>Linux应用</option><option>驱动 / BSP</option><option>嵌入式全栈</option></select></label><label><span>可投入时间</span><select v-model="bookingTime"><option value="" disabled>请选择</option><option>每天1小时以内</option><option>每天1-2小时</option><option>每天2小时以上</option></select></label></div><a class="btn btn-primary btn-large" :href="productUrl" target="_blank" rel="noopener noreferrer">开始预约 <ArrowRight :size="18" /></a><small><CalendarDays :size="15" />每月限额15人 · 工作日24小时内联系</small></aside>
+          <aside class="booking-panel"><span class="free-tag">免费 · 约15分钟</span><h3>预约1对1学习评估</h3><p>先聊基础与目标，再判断是否适合，不急着报名。</p><div class="booking-steps"><div><ClipboardCheck /></div><i></i><div><MessageCircleQuestion /></div><i></i><div><BarChart3 /></div><i></i><div><Flag /></div></div><div class="booking-labels"><span>提交需求</span><span>课程沟通</span><span>能力评估</span><span>获得建议</span></div><div class="booking-fields"><label><span>当前基础</span><select v-model="bookingBase"><option value="" disabled>请选择</option><option>C语言基础</option><option>单片机经验</option><option>Linux基础</option></select></label><label><span>目标方向</span><select v-model="bookingTarget"><option value="" disabled>请选择</option><option>嵌入式基础</option><option>Linux应用</option><option>驱动 / BSP</option><option>嵌入式全栈</option></select></label><label><span>可投入时间</span><select v-model="bookingTime"><option value="" disabled>请选择</option><option>每天1小时以内</option><option>每天1-2小时</option><option>每天2小时以上</option></select></label></div><a class="btn btn-primary btn-large" :href="consultationUrl" target="_blank" rel="noopener noreferrer">开始预约 <ArrowRight :size="18" /></a><small><CalendarDays :size="15" />每月限额15人 · 工作日24小时内联系</small></aside>
         </div>
         <div class="promise-band"><div><ShieldCheck /><p><b>不合适会明确告知</b><span>评估后不匹配，会如实说明原因与建议</span></p></div><div><Target /><p><b>先评估再制定路线</b><span>结合基础与目标，给出个性化成长路径</span></p></div><div><UserRound /><p><b>不承诺虚假就业结果</b><span>不包就业、不承诺结果，专注真实能力成长</span></p></div></div>
       </section>
     </main>
 
     <footer class="site-footer"><div class="container"><div><b>百问科技 · 韦东山1对1培养计划</b><span>1v1.100ask.net</span></div><nav><button v-for="item in navItems" :key="item[0]" @click="goTo(item[0])">{{ item[1] }}</button></nav><p>专注嵌入式工程师真实能力成长</p></div></footer>
-    <a class="mobile-booking" :href="productUrl" target="_blank" rel="noopener noreferrer"><MessageCircleQuestion :size="20" />预约1对1评估</a>
+    <a class="mobile-booking" :href="consultationUrl" target="_blank" rel="noopener noreferrer"><MessageCircleQuestion :size="20" />预约1对1评估</a>
   </div>
 </template>
